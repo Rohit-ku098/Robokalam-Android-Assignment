@@ -129,7 +129,11 @@ fun HomeScreen(
                 }
 
                 is ApiResponse.Error -> {
-                    Toast.makeText(context, (quotes as ApiResponse.Error).message, Toast.LENGTH_SHORT).show()
+                    Text(
+                        text = "Quote Error: ${(quotes as ApiResponse.Error<List<Quote>>).message}",
+                        modifier = Modifier.padding(8.dp),
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
                 is ApiResponse.Success -> {
                     QuoteCard(
