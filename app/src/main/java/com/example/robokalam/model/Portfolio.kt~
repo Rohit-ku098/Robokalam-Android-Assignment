@@ -1,0 +1,37 @@
+package com.example.robokalam.model
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
+@Entity
+data class Portfolio(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val name: String,
+    val college: String,
+    val skills: String,
+    val projects: Pair<String, String>,
+)
+
+
+class Converters {
+    private val gson = Gson()
+
+    @TypeConverter
+    fun fromProject(projectList: Pair<String, String>): String {
+        return gson.toJson(projectList)
+    }
+
+    @TypeConverter
+    fun toProject(json: String?): Pair<String, String> {
+        if (json.isNullOrEmpty()) return Pair("", "")
+        val type = object : TypeToken<Pair<String, String>>() {}.type
+        return gson.fromJson(json, type)
+    }
+}
+
+
